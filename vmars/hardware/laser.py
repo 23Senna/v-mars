@@ -43,7 +43,7 @@ class LaserSensorWorker(threading.Thread):
 
         self.is_connected = False
         self._serial: serial.Serial | None = None
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self._lock = threading.Lock()
         self._logging_enabled = threading.Event()  # set = inside measurement window
 
@@ -116,13 +116,13 @@ class LaserSensorWorker(threading.Thread):
             self._initialise_sensor()
 
             if self.start_delay_s > 0:
-                self._stop.wait(self.start_delay_s)
+                self._stop_event.wait(self.start_delay_s)
 
-            while not self._stop.is_set():
+            while not self._stop_event.is_set():
                 cycle_start = time.time()
                 self._fire_single_shot()
                 elapsed = time.time() - cycle_start
-                self._stop.wait(max(0.1, config.JRT_SHOT_INTERVAL_S - elapsed))
+                self._stop_event.wait(max(0.1, config.JRT_SHOT_INTERVAL_S - elapsed))
         except Exception as exc:  # noqa: BLE001
             self.is_connected = False
             log.error("JRT sensor %s (%s) failed: %s", self.label, self.port, exc)
@@ -159,7 +159,7 @@ class LaserSensorWorker(threading.Thread):
         ser.write(jrt.CMD_SINGLE_SHOT_AUTO)
         shot_time = time.perf_counter()
 
-        while time.perf_counter() - shot_time < config.JRT_REPLY_TIMEOUT_S and not self._stop.is_set():
+        while time.perf_counter() - shot_time < config.JRT_REPLY_TIMEOUT_S and not self._stop_event.is_set():
             if ser.in_waiting > 0 and ser.read(1) == bytes([jrt.JRT_FRAME_HEADER]):
                 body = ser.read(jrt.JRT_FRAME_BODY_LEN)
                 if len(body) == jrt.JRT_FRAME_BODY_LEN:
@@ -180,7 +180,7 @@ class LaserSensorWorker(threading.Thread):
             time.sleep(0.01)
 
     def stop(self) -> None:
-        self._stop.set()
+        self._stop_event.set()
         if self._serial and self._serial.is_open:
             try:
                 self._serial.write(jrt.CMD_LASER_OFF)
