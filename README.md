@@ -1,6 +1,6 @@
 # V-MARS — Vascular Multi-Axis Rotation System
 
-[![CI](https://github.com/<your-username>/v-mars-hmi/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-username>/v-mars-hmi/actions/workflows/ci.yml)
+[![CI](https://github.com/23Senna/v-mars/actions/workflows/ci.yml/badge.svg)](https://github.com/23Senna/v-mars/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![PyQt5](https://img.shields.io/badge/GUI-PyQt5-41cd52)
 ![Platform](https://img.shields.io/badge/platform-Orange%20Pi%204%20Pro-orange)
@@ -74,7 +74,7 @@ More detail: [architecture](docs/architecture.md) ·
 ## Repository layout
 
 ```
-v-mars-hmi/
+v-mars/
 ├── vmars/
 │   ├── config.py          all tunable parameters (+ .env loading)
 │   ├── control/           pure process logic — no Qt, no hardware, fully tested
@@ -97,8 +97,8 @@ sudo apt install python3-pyqt5 python3-pyqtgraph python3-serial \
                  python3-psycopg2 python3-smbus python3-venv postgresql i2c-tools
 
 # 2. Code
-git clone https://github.com/<your-username>/v-mars-hmi.git
-cd v-mars-hmi
+git clone https://github.com/23Senna/v-mars.git
+cd v-mars
 python3 -m venv --system-site-packages .venv
 .venv/bin/pip install -e . --no-deps
 # (if python3-pyqtgraph is not packaged for your image: .venv/bin/pip install pyqtgraph)

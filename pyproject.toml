@@ -23,6 +23,9 @@ dependencies = [
     "psycopg2-binary>=2.8",
 ]
 
+[project.urls]
+Repository = "https://github.com/23Senna/v-mars"
+
 [project.optional-dependencies]
 i2c = ["smbus2>=0.4"]
 dev = ["pytest>=7", "ruff>=0.4"]

@@ -3,6 +3,6 @@ Type=Application
 Name=V-MARS HMI
 Comment=Vascular Multi-Axis Rotation System
 # Adjust the path to where the repository is cloned.
-Exec=sh -c "cd $HOME/v-mars-hmi && .venv/bin/python -m vmars"
+Exec=sh -c "cd $HOME/v-mars && .venv/bin/python -m vmars"
 Terminal=false
 X-GNOME-Autostart-enabled=true
