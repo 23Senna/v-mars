@@ -1,0 +1,20 @@
+# /etc/udev/rules.d/99-vmars-serial.rules
+#
+# 1. Stable device names for the two JRT laser USB-serial adapters, so S1/S2
+#    never swap after a reboot or re-plug.
+# 2. Disable USB autosuspend for those adapters (random disconnects otherwise).
+#
+# Find the values with:   udevadm info -a -n /dev/ttyUSB0 | grep -E 'idVendor|idProduct|serial'
+# Then reload:            sudo udevadm control --reload-rules && sudo udevadm trigger
+# And set in .env:        VMARS_JRT_S1_PORT=/dev/vmars-laser-s1
+#                         VMARS_JRT_S2_PORT=/dev/vmars-laser-s2
+#
+# 067b:2303 is a Prolific PL2303 adapter — replace with your own IDs/serials.
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", ATTRS{serial}=="REPLACE_S1_SERIAL", SYMLINK+="vmars-laser-s1", GROUP="dialout", MODE="0660"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", ATTRS{serial}=="REPLACE_S2_SERIAL", SYMLINK+="vmars-laser-s2", GROUP="dialout", MODE="0660"
+
+# If both adapters report the same serial, match the physical USB port instead:
+# SUBSYSTEM=="tty", KERNELS=="1-1.2:1.0", SYMLINK+="vmars-laser-s1"
+
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="067b", ATTR{idProduct}=="2303", TEST=="power/control", ATTR{power/control}="on"

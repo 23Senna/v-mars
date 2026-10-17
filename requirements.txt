@@ -1,0 +1,8 @@
+# Runtime dependencies.
+# On the Orange Pi prefer the distro packages (see README → Installation):
+#   sudo apt install python3-pyqt5 python3-pyqtgraph python3-serial python3-psycopg2 python3-smbus
+PyQt5>=5.12
+pyqtgraph>=0.11
+pyserial>=3.4
+psycopg2-binary>=2.8
+smbus2>=0.4

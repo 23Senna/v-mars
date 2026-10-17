@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vmars"
+version = "1.0.0"
+description = "Touchscreen HMI for V-MARS, a 3-axis rotation platform for fabricating hydrogel blood-vessel models"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Bramantio Ananda" }]
+keywords = ["pyqt5", "hmi", "orange-pi", "esp32", "biofabrication", "hydrogel"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Environment :: X11 Applications :: Qt",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "PyQt5>=5.12",
+    "pyqtgraph>=0.11",
+    "pyserial>=3.4",
+    "psycopg2-binary>=2.8",
+]
+
+[project.optional-dependencies]
+i2c = ["smbus2>=0.4"]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[project.scripts]
+vmars = "vmars.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["vmars*"]
+
+[tool.setuptools.package-data]
+vmars = ["assets/*.png"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+ignore = ["B008"]
